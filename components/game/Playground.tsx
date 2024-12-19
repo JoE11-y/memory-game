@@ -1,24 +1,13 @@
-'use client'
 import { getImages } from '@/utils'
-import { Button } from 'antd';
+import { Button } from 'antd'
 import React, { useEffect, useState } from 'react'
-import CardPage from './CardPage';
+import { CardDetails } from './Card'
+import Card from './Card'
 
-export interface ImageDetails {
-  id: string,
-  width: number,
-  height: number,
-  url: string,
-  src: {
-    original: string;
-  },
-  matched: boolean
-}
-
-const Cards = () => {
-  const [cards, setCards] = useState<ImageDetails[]>([])
-  const [card1, setCard1] = useState<ImageDetails | null>(null)
-  const [card2, setCard2] = useState<ImageDetails | null>(null)
+const Playground = ({ gameId }: { gameId: string }) => {
+  const [cards, setCards] = useState<CardDetails[]>([])
+  const [card1, setCard1] = useState<CardDetails | null>(null)
+  const [card2, setCard2] = useState<CardDetails | null>(null)
   const [disabled, setDisabled] = useState<boolean>(false)
 
   const shuffleCards = async () => {
@@ -27,7 +16,7 @@ const Cards = () => {
     if (!queryResult.photos) {
       throw new Error("unable to query")
     }
-    const images = queryResult.photos as ImageDetails[];
+    const images = queryResult.photos as CardDetails[];
     const shuffledCards = [...images, ...images].sort(() => Math.random() - 0.5);
     const final = shuffledCards.map((data, index) => (
       { ...data, matched: false, id: `${data.id}${index}` }
@@ -35,7 +24,7 @@ const Cards = () => {
     setCards(final)
   }
 
-  const handleCardPick = (card: ImageDetails) => {
+  const handleCardPick = (card: CardDetails) => {
     card1 ? setCard2(card) : setCard1(card)
   }
 
@@ -70,16 +59,17 @@ const Cards = () => {
       }
     }
   }, [card1, card2])
-
   return (
-    <div>
-      <Button onClick={() => shuffleCards()}>
-        Start Game
-      </ Button>
+    <div className='w-full'>
+      <div className='flex items-center justify-center mt-4'>
+        <Button onClick={() => shuffleCards()}>
+          Start Game
+        </ Button>
+      </div>
 
-      <div className='grid grid-cols-4 mt-2'>
+      <div className='grid grid-cols-4 gap-2 min-h-[347px]'>
         {cards.map((card) => (
-          <CardPage
+          <Card
             key={card.id}
             image={card}
             handleCardPick={handleCardPick}
@@ -87,10 +77,9 @@ const Cards = () => {
             disabled={disabled}
           />
         ))}
-
       </div>
     </div>
   )
 }
 
-export default Cards
+export default Playground

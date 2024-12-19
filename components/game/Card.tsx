@@ -1,16 +1,25 @@
 import React from 'react'
 import Image from 'next/image'
-import { useTheme } from 'next-themes'
-import { ImageDetails } from './Cards';
 import { motion } from 'framer-motion';
 
-const CardPage = ({ image, handleCardPick, flipped, disabled }: {
-  image: ImageDetails,
+export interface CardDetails {
+  id: string,
+  width: number,
+  height: number,
+  url: string,
+  src: {
+    original: string;
+  },
+  matched: boolean
+}
+
+
+const Card = ({ image, handleCardPick, flipped, disabled }: {
+  image: CardDetails,
   handleCardPick: Function,
   flipped: boolean,
   disabled: boolean
 }) => {
-  const { theme } = useTheme()
   const handleClick = () => {
     if (!disabled) {
       handleCardPick(image)
@@ -18,7 +27,7 @@ const CardPage = ({ image, handleCardPick, flipped, disabled }: {
   }
 
   return (
-    <div className='flex items-center justify-center h-[12rem]'>
+    <div className='flex items-center justify-center h-[8rem]'>
       <div className='flex items-center justify-center w-full h-full flip-card' onClick={handleClick}>
         <motion.div className='flip-card-inner w-full h-full'
           initial={false}
@@ -31,14 +40,14 @@ const CardPage = ({ image, handleCardPick, flipped, disabled }: {
             src={image.src.original}
             width={100}
             height={100}
-            className="flip-card-front w-[10rem] h-[10rem] rounded-md"
+            className="flip-card-front w-[6rem] h-[6rem] rounded-md"
           />
           <Image
             alt=""
-            src="/imgs/back.jpeg"
+            src="/imgs/back.png"
             width={100}
             height={100}
-            className="flip-card-back w-[10rem] h-[10rem] rounded-md"
+            className="flip-card-back w-[6rem] h-[6rem] rounded-md"
           />
         </motion.div>
       </div>
@@ -46,4 +55,4 @@ const CardPage = ({ image, handleCardPick, flipped, disabled }: {
   )
 }
 
-export default CardPage
+export default Card

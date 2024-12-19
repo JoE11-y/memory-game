@@ -14,7 +14,7 @@ export const Footer = () => {
     setMode(theme)
   }
   return (
-    <div className="w-full p-[3em] mt-auto">
+    <div className="w-full py-[3em] mt-auto">
       <div className="flex items-center justify-between p-3">
         <h3 className="font-bold text-[14px]">
           {moment().year()}

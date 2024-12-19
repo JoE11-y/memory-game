@@ -25,7 +25,7 @@ function AntDesignProvider({ children }: { children: React.ReactNode }) {
     <ConfigProvider
       theme={{
         algorithm: currentTheme === 'light' ? antdTheme.defaultAlgorithm : antdTheme.darkAlgorithm,
-        token: { colorPrimary: "#f0591d" }
+        token: { colorPrimary: "#F2994A" }
       }}
     >
       {children}
