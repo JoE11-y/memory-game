@@ -26,7 +26,6 @@ export interface StartGameResult {
 export interface CardState {
   id: string;
   url: string;
-  userId: string | null;
   isOpen: boolean;
   isMatched: boolean;
 }
@@ -45,4 +44,16 @@ export interface GameState {
 export interface GameStateResult {
   state: GameState;
   message: string;
+}
+
+export interface CardFlippedResult {
+  state: GameState;
+  message: string;
+  cardId: string;
+}
+
+export interface CardsEvalResult {
+  state: GameState;
+  message: string;
+  cards: string[];
 }

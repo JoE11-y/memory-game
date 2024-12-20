@@ -5,15 +5,6 @@ import { useEffect, useState } from 'react';
 
 export default function Header() {
   const { isDarkMode } = useThemeMode()
-  // const [imgSrc, setImgSrc] = useState<string>("/imgs/logo.png");
-
-  // useEffect(() => {
-  //   if (!isDarkMode) {
-  //     setImgSrc('')
-  //   } else {
-  //     setImgSrc('')
-  //   }
-  // }, [isDarkMode])
   return (
     <div className='flex items-center justify-center'>
       <Link href="/">
