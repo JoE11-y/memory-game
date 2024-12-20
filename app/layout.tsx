@@ -4,8 +4,7 @@ import "./globals.css";
 import { AntProvider } from "@/components/shared/AntProvider";
 import { SocketProvider } from "@/context/socketContext";
 import { ReduxProvider } from "@/context/reduxProvider";
-import { Footer } from "antd/es/layout/layout";
-import Header from "@/components/layout/Header";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,11 +22,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body className={`${inter.className}`}>
         <ReduxProvider>
-          {/* <SocketProvider> */}
-          <AntProvider>
-            {children}
-          </AntProvider>
-          {/* </SocketProvider> */}
+          <SocketProvider>
+            <AntProvider>
+              {children}
+              <ToastContainer />
+            </AntProvider>
+          </SocketProvider>
         </ReduxProvider>
       </body>
     </html>

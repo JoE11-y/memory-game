@@ -2,17 +2,18 @@
 import React from "react"
 import moment from "moment"
 import { Switch } from "antd";
-import { useTheme } from "@/hooks/useTheme";
-import { useTheme as useThemeNext } from "next-themes"
+import { useThemeMode } from "antd-style";
+import { useTheme } from "next-themes";
 
 export const Footer = () => {
-  const { mode, setMode } = useTheme();
-  const { theme, setTheme } = useThemeNext();
+  const { isDarkMode, setThemeMode } = useThemeMode()
+  const { setTheme } = useTheme()
 
-  const handleSetTheme = (theme: 'light' | 'dark') => {
-    setTheme(theme);
-    setMode(theme)
+  const handleSetTheme = (mode: 'light' | 'dark') => {
+    setThemeMode(mode);
+    setTheme(mode)
   }
+
   return (
     <div className="w-full py-[3em] mt-auto">
       <div className="flex items-center justify-between p-3">
@@ -20,10 +21,9 @@ export const Footer = () => {
           {moment().year()}
         </h3>
         <div className="flex gap-4 items-center">
-          <Switch checkedChildren="Dark" unCheckedChildren="Light" checked={theme == 'light'} onClick={() => handleSetTheme(mode == 'light' ? 'dark' : 'light')} />
+          <Switch checkedChildren="Dark" unCheckedChildren="Light" checked={isDarkMode} onClick={() => handleSetTheme(!isDarkMode ? 'dark' : 'light')} />
         </div>
       </div>
-
     </div>
   )
 }

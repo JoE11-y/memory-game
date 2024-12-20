@@ -1,11 +1,10 @@
 import { LogInDataI, ProfileI } from "@/interfaces";
+import config from "@/utils/config";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-const url = "http://localhost:3000";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ baseUrl: `${url}/auth` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${config.SERVER_URL}/auth` }),
   endpoints: (builder) => ({
     signup: builder.mutation<any, LogInDataI>({
       query({ username, password }) {

@@ -1,10 +1,9 @@
 "use client"
 
 import { useAccessToken } from '@/hooks/useAccessToken';
+import config from '@/utils/config';
 import { createContext, ReactNode, useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
-
-const url = "http:localhost:3000"
 
 export const SocketContext = createContext<{ socket: Socket | null }>({
   socket: null
@@ -12,7 +11,7 @@ export const SocketContext = createContext<{ socket: Socket | null }>({
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { accessToken } = useAccessToken();
-  const socket = io(url, {
+  const socket = io(config.SERVER_URL, {
     transports: ['polling', 'websocket'],
     auth: { token: `Bearer ${accessToken}` },
     autoConnect: true,
@@ -25,7 +24,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     socket.on("errors", (data) => {
       console.log(data?.message)
     })
-  }, [])
+  }, [socket])
 
   return (
     <SocketContext.Provider value={{ socket }}>

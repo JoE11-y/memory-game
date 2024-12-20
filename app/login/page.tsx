@@ -8,13 +8,15 @@ import { Button, Form, Input, message, Space } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useTheme } from 'next-themes';
+import { toast } from 'react-toastify';
+import { useThemeMode } from 'antd-style';
+
 function LoginPage() {
   const router = useRouter();
   const [form] = Form.useForm<LogInDataI>();
   const { setAccessToken } = useAccessToken();
   const [login, { isLoading }] = useLoginMutation();
-  const { theme } = useTheme()
+  const { isDarkMode } = useThemeMode()
 
   const onFinish = async () => {
     try {
@@ -25,14 +27,14 @@ function LoginPage() {
       if (response.data) {
         setAccessToken(response?.data?.access_token)
         router.replace('/game')
-        message.success('Login successful');
+        toast.success('Login successful');
       } else {
         throw new Error("Failed to Log In, please try again later")
       }
 
     } catch (error: any) {
+      toast.error(error.data?.message || error?.message || 'An error occurred')
       console.log(error.data?.message || error?.message || "An error occurred")
-      message.error('Submit failed!');
     }
 
   };
@@ -40,7 +42,7 @@ function LoginPage() {
   return (
     <div className="container max-w-2xl mt-16">
       <Header />
-      <div className={`flex items-center justify-center mt-4 p-20 ${theme == 'dark' ? 'bg-darkgray' : 'bg-lightgray'}`}>
+      <div className={`flex items-center justify-center mt-4 p-20 ${isDarkMode ? 'bg-darkgray' : 'bg-lightgray'}`}>
 
         <Form
           form={form}

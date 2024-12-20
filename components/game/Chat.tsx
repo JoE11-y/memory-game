@@ -3,9 +3,6 @@ import { Message } from '@/interfaces';
 import { useGetProfileQuery } from '@/redux-services/auth.service';
 import React, { Fragment, useState } from 'react'
 import { IoMdChatboxes } from 'react-icons/io'
-import { CgClose } from 'react-icons/cg';
-import { data } from 'framer-motion/client';
-import { useTheme } from '@/hooks/useTheme';
 import { Avatar, Button, Form, Input, Space } from 'antd';
 import moment from 'moment';
 import { SendOutlined } from '@ant-design/icons';

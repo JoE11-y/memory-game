@@ -8,27 +8,31 @@ import { Form, Space, Button, Input } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useTheme } from 'next-themes';
+import { useThemeMode } from 'antd-style';
+import { toast } from 'react-toastify';
+
 function SignupPage() {
   const router = useRouter();
   const [form] = Form.useForm<LogInDataI>();
   const { setAccessToken } = useAccessToken();
   const [signup, { isLoading }] = useSignupMutation();
-  const { theme } = useTheme()
+  const { isDarkMode } = useThemeMode()
   const onFinish = async () => {
     try {
       const user = form.getFieldsValue();
       if (!user.password && !user.username) return
       const response = (await signup(user).unwrap()) || {}
-
-      if (response.data) {
+      console.log(response)
+      if (response.data && response.data.access_token !== "") {
         setAccessToken(response?.data?.access_token)
+        toast.success('Sign up successful')
         router.replace('/game')
       } else {
         throw new Error("Failed to Sign Up, please try again later")
       }
 
     } catch (error: any) {
+      toast.error(error.data?.message || error?.message || 'An error occurred')
       console.log(error.data?.message || error?.message || "An error occurred")
     }
   }
@@ -36,7 +40,7 @@ function SignupPage() {
   return (
     <div className="container max-w-2xl mt-16">
       <Header />
-      <div className={`flex items-center justify-center mt-4 p-20 ${theme == 'dark' ? 'bg-darkgray' : 'bg-lightgray'} shadow-lg`}>
+      <div className={`flex items-center justify-center mt-4 p-20 ${isDarkMode ? 'bg-darkgray' : 'bg-lightgray'} shadow-lg`}>
 
         <Form
           form={form}
@@ -48,7 +52,8 @@ function SignupPage() {
           <Form.Item
             name="username"
             label="Username"
-            rules={[{ required: true }, { type: 'string', min: 6, max: 10 }]}
+            rules={[{ required: true }, { type: 'string', min: 4, max: 10 }]}
+            className='mb-2'
           >
             <Input placeholder="Enter username" />
           </Form.Item>

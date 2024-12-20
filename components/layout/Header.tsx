@@ -1,19 +1,19 @@
-import { useTheme } from 'next-themes';
+import { useThemeMode } from 'antd-style';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function Header() {
-  const { theme } = useTheme()
-  const [imgSrc, setImgSrc] = useState<string>("/imgs/logo.png");
+  const { isDarkMode } = useThemeMode()
+  // const [imgSrc, setImgSrc] = useState<string>("/imgs/logo.png");
 
-  useEffect(() => {
-    if (theme == 'dark') {
-      setImgSrc('/imgs/logo-dark.png')
-    } else {
-      setImgSrc('/imgs/logo.png')
-    }
-  }, [theme])
+  // useEffect(() => {
+  //   if (!isDarkMode) {
+  //     setImgSrc('')
+  //   } else {
+  //     setImgSrc('')
+  //   }
+  // }, [isDarkMode])
   return (
     <div className='flex items-center justify-center'>
       <Link href="/">
@@ -21,7 +21,7 @@ export default function Header() {
           <span>Memory Game</span>
           <div>
             <Image
-              src={imgSrc}
+              src={isDarkMode ? '/imgs/logo-dark.png' : '/imgs/logo.png'}
               alt="playing cards"
               className="ml-2 h-8"
               width={74}

@@ -12,6 +12,11 @@
   --foreground: #f4f4f4;
 }
 
+[data-theme="light"] {
+  --background: #2c2c2c;
+  --foreground: #f4f4f4;
+}
+
 .flip-card {
   perspective: 1000px;
 }
