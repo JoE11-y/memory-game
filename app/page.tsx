@@ -14,7 +14,7 @@ export default function Home() {
     if (!accessToken) {
       router.replace('/login')
     } else {
-      router.replace('/games')
+      router.replace('/game')
     }
   }
 

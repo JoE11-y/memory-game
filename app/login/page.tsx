@@ -54,7 +54,7 @@ function LoginPage() {
           <Form.Item
             name="username"
             label="Username"
-            rules={[{ required: true }, { type: 'string', min: 6, max: 10 }]}
+            rules={[{ required: true }, { type: 'string', min: 4, max: 10 }]}
           >
             <Input placeholder="Enter username" />
           </Form.Item>

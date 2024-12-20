@@ -5,81 +5,83 @@ import { CardDetails } from './Card'
 import Card from './Card'
 import { useGetProfileQuery } from '@/redux-services/auth.service';
 import { useAccessToken } from '@/hooks/useAccessToken';
+import { useSocket } from '@/hooks/useSocket'
+import { CardState, GameState, GameStateResult } from '@/interfaces'
 
 const Playground = ({ gameId }: { gameId: string }) => {
   const { accessToken } = useAccessToken()
   const { data, isLoading, refetch } = useGetProfileQuery({ accessToken })
-  const [cards, setCards] = useState<CardDetails[]>([])
-  const [card1, setCard1] = useState<CardDetails | null>(null)
-  const [card2, setCard2] = useState<CardDetails | null>(null)
-  const [disabled, setDisabled] = useState<boolean>(false)
-
-  const shuffleCards = async () => {
-    setCards([])
-    const queryResult = await getImages();
-    if (!queryResult.photos) {
-      throw new Error("unable to query")
-    }
-    const images = queryResult.photos as CardDetails[];
-    const shuffledCards = [...images, ...images].sort(() => Math.random() - 0.5);
-    const final = shuffledCards.map((data, index) => (
-      { ...data, matched: false, id: `${data.id}${index}` }
-    ))
-    setCards(final)
-  }
+  const [card1, setCard1] = useState<CardState | null>(null)
+  const [card2, setCard2] = useState<CardState | null>(null)
+  const [disabled, setDisabled] = useState<boolean>(true)
+  const { socket } = useSocket();
+  const [gameState, setGameState] = useState<GameState | null>(null)
 
   const handleCardPick = (card: CardDetails) => {
-    card1 ? setCard2(card) : setCard1(card)
+    // card1 ? setCard2(card) : setCard1(card)
+    console.log('click')
   }
 
-  const reset = () => {
-    setCard1(null);
-    setCard2(null);
-    setDisabled(false);
-  }
+  // const reset = () => {
+  //   setCard1(null);
+  //   setCard2(null);
+  //   setDisabled(false);
+  // }
+
+  // useEffect(() => {
+  //   if (card1 && card2) {
+  //     setDisabled(true)
+  //     if (card1.id == card2.id) {
+  //       setCard2(null)
+  //       return
+  //     }
+  //     if (card1.src.original == card2.src.original) {
+  //       setCards(prev => {
+  //         return prev.map(card => {
+  //           if (card.src.original == card1.src.original) {
+  //             return { ...card, matched: true }
+  //           } else {
+  //             return card
+  //           }
+  //         })
+  //       })
+  //       console.log('match')
+  //       reset()
+  //     } else {
+  //       console.log('no match')
+  //       setTimeout(reset, 1000)
+  //     }
+  //   }
+  // }, [card1, card2])
+
+  socket.on('game-state', (data: GameStateResult) => {
+    console.log(data)
+    setGameState(data.state);
+  })
 
   useEffect(() => {
-    if (card1 && card2) {
-      setDisabled(true)
-      if (card1.id == card2.id) {
-        setCard2(null)
-        return
-      }
-      if (card1.src.original == card2.src.original) {
-        setCards(prev => {
-          return prev.map(card => {
-            if (card.src.original == card1.src.original) {
-              return { ...card, matched: true }
-            } else {
-              return card
-            }
-          })
-        })
-        console.log('match')
-        reset()
-      } else {
-        console.log('no match')
-        setTimeout(reset, 1000)
-      }
+    if (!gameState) {
+      socket.emit('get-state', {
+        gameId: gameId
+      })
     }
-  }, [card1, card2])
+  }, [])
+
+  useEffect(() => {
+    if (gameState && gameState.status === 'game-started') {
+      setDisabled(false)
+    }
+  }, [gameState])
+
   return (
     <div className='w-full'>
-      {cards.length == 0 &&
-        <div className='flex items-center justify-center mt-2'>
-          <Button onClick={() => shuffleCards()}>
-            Start Game
-          </ Button>
-        </div>
-      }
-
       <div className='grid grid-cols-4 gap-2 min-h-[350px]'>
-        {cards.map((card) => (
+        {gameState && gameState?.cards.map((card) => (
           <Card
             key={card.id}
-            image={card}
+            image={card.url}
             handleCardPick={handleCardPick}
-            flipped={card === card1 || card === card2 || card.matched}
+            flipped={card.isOpen}
             disabled={disabled}
           />
         ))}

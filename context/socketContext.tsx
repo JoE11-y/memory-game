@@ -11,17 +11,19 @@ export const SocketContext = createContext<{ socket: Socket | null }>({
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { accessToken } = useAccessToken();
+
   const socket = io(config.SERVER_URL, {
     transports: ['polling', 'websocket'],
     auth: { token: `Bearer ${accessToken}` },
     autoConnect: true,
     extraHeaders: {
       authorization: `Bearer ${accessToken}`
-    }
+    },
+    reconnection: true
   })
 
   useEffect(() => {
-    socket.on("errors", (data) => {
+    socket.on("error", (data) => {
       console.log(data?.message)
     })
   }, [socket])

@@ -17,3 +17,32 @@ export interface Message {
   timestamp: string;
   userId: string;
 }
+
+export interface StartGameResult {
+  gameId: string;
+  player: string;
+}
+
+export interface CardState {
+  id: string;
+  url: string;
+  userId: string | null;
+  isOpen: boolean;
+  isMatched: boolean;
+}
+
+export interface GameState {
+  id: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  maxPlayers: number;
+  isDisabled: boolean;
+  currRound: string | null;
+  cards: CardState[];
+}
+
+export interface GameStateResult {
+  state: GameState;
+  message: string;
+}

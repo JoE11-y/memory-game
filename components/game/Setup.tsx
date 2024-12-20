@@ -2,10 +2,13 @@
 import { Button, Input, Radio } from 'antd';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { useSocket } from '@/hooks/useSocket';
+import { StartGameResult } from '@/interfaces';
+import { toast } from 'react-toastify';
 
 const Setup = () => {
   const router = useRouter();
-
+  const { socket } = useSocket()
   const [gameMode, setGameMode] = useState<'solo' | 'multi'>('solo')
   const [isJoinGame, setIsJoinGame] = useState<boolean>(false);
   const [gameId, setGameId] = useState<string>("");
@@ -21,15 +24,27 @@ const Setup = () => {
   }
 
   const handleStartGame = (noOfPlayers: number) => {
-    // create new game
-    // get id
-    // route to id
-    const testId = "123456";
-    router.replace(`/game/${testId}`)
+    console.log('start-game')
+    socket.emit("start-game", {
+      noOfPlayers: noOfPlayers
+    })
+
+    socket.on('game-created', (data: StartGameResult) => {
+      console.log('game-started')
+      toast.success('Game started successfully')
+      setTimeout(() => {
+        router.replace(`/game/${data.gameId}`)
+      }, 2000)
+    })
   }
 
   const handleJoinGame = () => {
     if (!gameId) return
+
+    socket.emit("join-game", {
+      gameId: gameId
+    })
+
     router.replace(`/game/${gameId}`)
   }
 

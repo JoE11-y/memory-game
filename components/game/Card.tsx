@@ -15,7 +15,7 @@ export interface CardDetails {
 
 
 const Card = ({ image, handleCardPick, flipped, disabled }: {
-  image: CardDetails,
+  image: string,
   handleCardPick: Function,
   flipped: boolean,
   disabled: boolean
@@ -37,7 +37,7 @@ const Card = ({ image, handleCardPick, flipped, disabled }: {
         >
           <Image
             alt=""
-            src={image.src.original}
+            src={image}
             width={100}
             height={100}
             className="flip-card-front w-[6rem] h-[6rem] rounded-md"
