@@ -3,8 +3,12 @@ import { Button } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { CardDetails } from './Card'
 import Card from './Card'
+import { useGetProfileQuery } from '@/redux-services/auth.service';
+import { useAccessToken } from '@/hooks/useAccessToken';
 
 const Playground = ({ gameId }: { gameId: string }) => {
+  const { accessToken } = useAccessToken()
+  const { data, isLoading, refetch } = useGetProfileQuery({ accessToken })
   const [cards, setCards] = useState<CardDetails[]>([])
   const [card1, setCard1] = useState<CardDetails | null>(null)
   const [card2, setCard2] = useState<CardDetails | null>(null)
@@ -61,13 +65,15 @@ const Playground = ({ gameId }: { gameId: string }) => {
   }, [card1, card2])
   return (
     <div className='w-full'>
-      <div className='flex items-center justify-center mt-4'>
-        <Button onClick={() => shuffleCards()}>
-          Start Game
-        </ Button>
-      </div>
+      {cards.length == 0 &&
+        <div className='flex items-center justify-center mt-2'>
+          <Button onClick={() => shuffleCards()}>
+            Start Game
+          </ Button>
+        </div>
+      }
 
-      <div className='grid grid-cols-4 gap-2 min-h-[347px]'>
+      <div className='grid grid-cols-4 gap-2 min-h-[350px]'>
         {cards.map((card) => (
           <Card
             key={card.id}

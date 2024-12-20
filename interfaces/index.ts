@@ -10,3 +10,10 @@ export interface LogInDataI {
   username: string;
   password: string;
 }
+
+export interface Message {
+  id: string;
+  text: string;
+  timestamp: string;
+  userId: string;
+}

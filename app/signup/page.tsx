@@ -2,20 +2,19 @@
 import Header from '@/components/layout/Header';
 import { Footer } from '@/components/shared/Footer';
 import { useAccessToken } from '@/hooks/useAccessToken';
-import { useTheme } from '@/hooks/useTheme';
 import { LogInDataI } from '@/interfaces';
 import { useSignupMutation } from '@/redux-services/auth.service';
 import { Form, Space, Button, Input } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import React from 'react'
-
+import { useTheme } from 'next-themes';
 function SignupPage() {
   const router = useRouter();
   const [form] = Form.useForm<LogInDataI>();
   const { setAccessToken } = useAccessToken();
   const [signup, { isLoading }] = useSignupMutation();
-  const { mode } = useTheme()
+  const { theme } = useTheme()
   const onFinish = async () => {
     try {
       const user = form.getFieldsValue();
@@ -37,7 +36,7 @@ function SignupPage() {
   return (
     <div className="container max-w-2xl mt-16">
       <Header />
-      <div className={`flex items-center justify-center mt-4 p-20 ${mode == 'dark' ? 'bg-darkgray' : 'bg-lightgray'} shadow-lg`}>
+      <div className={`flex items-center justify-center mt-4 p-20 ${theme == 'dark' ? 'bg-darkgray' : 'bg-lightgray'} shadow-lg`}>
 
         <Form
           form={form}

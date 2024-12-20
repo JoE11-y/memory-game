@@ -2,20 +2,19 @@
 import Header from '@/components/layout/Header';
 import { Footer } from '@/components/shared/Footer';
 import { useAccessToken } from '@/hooks/useAccessToken';
-import { useTheme } from '@/hooks/useTheme';
 import { LogInDataI } from '@/interfaces';
 import { useLoginMutation } from '@/redux-services/auth.service';
 import { Button, Form, Input, message, Space } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import React from 'react'
-
+import { useTheme } from 'next-themes';
 function LoginPage() {
   const router = useRouter();
   const [form] = Form.useForm<LogInDataI>();
   const { setAccessToken } = useAccessToken();
   const [login, { isLoading }] = useLoginMutation();
-  const { mode } = useTheme()
+  const { theme } = useTheme()
 
   const onFinish = async () => {
     try {
@@ -41,7 +40,7 @@ function LoginPage() {
   return (
     <div className="container max-w-2xl mt-16">
       <Header />
-      <div className={`flex items-center justify-center mt-4 p-20 ${mode == 'dark' ? 'bg-darkgray' : 'bg-lightgray'}`}>
+      <div className={`flex items-center justify-center mt-4 p-20 ${theme == 'dark' ? 'bg-darkgray' : 'bg-lightgray'}`}>
 
         <Form
           form={form}

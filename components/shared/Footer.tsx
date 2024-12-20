@@ -20,7 +20,7 @@ export const Footer = () => {
           {moment().year()}
         </h3>
         <div className="flex gap-4 items-center">
-          <Switch checkedChildren="Dark" unCheckedChildren="Light" checked={mode == 'light'} onClick={() => handleSetTheme(mode == 'light' ? 'dark' : 'light')} />
+          <Switch checkedChildren="Dark" unCheckedChildren="Light" checked={theme == 'light'} onClick={() => handleSetTheme(mode == 'light' ? 'dark' : 'light')} />
         </div>
       </div>
 

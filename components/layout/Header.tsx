@@ -1,9 +1,19 @@
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
-  const { mode } = useTheme()
+  const { theme } = useTheme()
+  const [imgSrc, setImgSrc] = useState<string>("/imgs/logo.png");
+
+  useEffect(() => {
+    if (theme == 'dark') {
+      setImgSrc('/imgs/logo-dark.png')
+    } else {
+      setImgSrc('/imgs/logo.png')
+    }
+  }, [theme])
   return (
     <div className='flex items-center justify-center'>
       <Link href="/">
@@ -11,7 +21,7 @@ export default function Header() {
           <span>Memory Game</span>
           <div>
             <Image
-              src={mode == 'dark' ? '/imgs/logo-dark.png' : '/imgs/logo.png'}
+              src={imgSrc}
               alt="playing cards"
               className="ml-2 h-8"
               width={74}

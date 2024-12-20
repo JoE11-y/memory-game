@@ -4,14 +4,14 @@ import { Footer } from "@/components/shared/Footer";
 import { useAccessToken } from "@/hooks/useAccessToken";
 import { useTheme } from "@/hooks/useTheme";
 import { Button } from "antd";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTheme as useNextThemes } from "next-themes";
 
 export default function Home() {
   const router = useRouter();
-
   const { accessToken } = useAccessToken();
   const { mode } = useTheme();
+  const { theme } = useNextThemes()
 
   const handleContinue = () => {
     if (!accessToken) {
@@ -20,10 +20,13 @@ export default function Home() {
       router.replace('/games')
     }
   }
+
+  console.log(theme, mode)
+
   return (
     <div className="container max-w-2xl mt-16">
       <Header />
-      <div className={`flex items-center justify-center mt-4 p-20 shadow-lg ${mode == 'dark' ? 'bg-darkgray' : 'bg-lightgray'}`}>
+      <div className={`flex items-center justify-center mt-4 p-20  ${mode == 'dark' ? 'bg-darkgray' : 'bg-lightgray'}`}>
 
         <div className="h-[300px] w-[400px] bg-[url('/imgs/background.jpg')] backdrop-blur-sm rounded-lg">
 
@@ -45,6 +48,6 @@ export default function Home() {
 
       </div>
       <Footer />
-    </div>
+    </div >
   );
 }
